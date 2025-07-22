@@ -1,0 +1,30 @@
+Arduino Code:
+LiquidCrystal lcd(12, 11, 10, 9, 8, 7);
+int tempPin = A0;
+int relayPin = 6;
+float temperature;
+
+void setup() {
+  lcd.begin(16, 2);
+  pinMode(relayPin, OUTPUT);
+  lcd.print("Temp:     C");
+}
+
+void loop() {
+  int val = analogRead(tempPin);
+  temperature = val * 5.0 / 1023.0 * 100;
+  lcd.setCursor(6, 0);
+  lcd.print(temperature);
+
+  if (temperature < 30.0) {
+    digitalWrite(relayPin, HIGH);  // Heater ON
+    lcd.setCursor(0, 1);
+    lcd.print("Heater ON       ");
+  } else {
+    digitalWrite(relayPin, LOW);   // Heater OFF
+    lcd.setCursor(0, 1);
+    lcd.print("Heater OFF      ");
+  }
+
+  delay(1000);
+}
